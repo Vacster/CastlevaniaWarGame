@@ -99,33 +99,22 @@ public class Tablero extends JLayeredPane{
    private void start(){
         Frame.setVisible(true);
         Frame.setLocationRelativeTo(null); //Al medio de la pantalla
-        for(int x = 0; x<6;x++){//Inicializa las fichas
-            for(int y = 0; y<6;y++){
-                switch(x){
-                    case 0: if(y==0){
-                                were1 = new Werewolf(x,y,1);
-                            }else if(y==5){
-                                were3 = new Werewolf(x,y,2);
-                            }break;
-                    case 1: if(y==0){
-                                vamp1 = new Vampire( x,y,1);
-                            }else if(y==5){
-                                vamp3 = new Vampire(x,y,2);
-                            }break;   
-                    case 4: if(y==0){
-                                vamp2 = new Vampire(x,y,1);
-                            }else if(y==5){
-                                vamp4 = new Vampire(x,y,2);
-                            }break;  
-                    case 5: if(y==0){
-                                were2 = new Werewolf(x,y,1);
-                            }else if(y==5){
-                                were4 = new Werewolf(x,y,2);
-                            }break;
-                    default: System.out.println("Nothing here."+x+y); break;
-                }   //^opcional
-            }
-        }
+        
+        were1 = new Werewolf(0,0,1);
+        were2 = new Werewolf(5,0,1);
+        were3 = new Werewolf(0,5,2);
+        were4 = new Werewolf(5,5,2);
+        
+        vamp1 = new Vampire(1,0,1);
+        vamp2 = new Vampire(4,0,1);
+        vamp3 = new Vampire(1,5,2);
+        vamp4 = new Vampire(4,5,2);
+        
+        death1 = new Death(2,0,1);
+        death2 = new Death(3,0,1);
+        death3 = new Death(2,5,2);
+        death4 = new Death(3,5,2);
+        
         for(Ficha f : fichas){ //Agrega las fichas al panel en el que esta el 
             panel1.add(f);      // tablero
         }
