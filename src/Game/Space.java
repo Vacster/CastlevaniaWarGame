@@ -7,12 +7,14 @@ package Game;
 
 import static Game.Tablero.*;
 import javax.swing.JLabel;
+import java.awt.event.MouseEvent; //puntos extra por entender este relajo
+import java.awt.event.MouseListener; 
 
 /**
  *
  * @author Kamil
  */
-public class Space extends JLabel{   
+public class Space extends JLabel implements MouseListener{   
     
     int x,y;
     
@@ -23,8 +25,37 @@ public class Space extends JLabel{
         if(fichitas[x][y] == null){
         setBounds((int)(100.0*x)+3, (int)(100.0*y)+8, 94, 94);
         setIcon(Space);
+        addMouseListener(this);
         panel1.add(this,Frame.getComponentCount()-1);
         espacios.add(this);
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        currentficha.movimiento(x,y);
+        for(Space s : espacios){ //Quita los espacios del panel
+            panel1.remove(s);
+        }
+        espacios.clear(); //Quita los espacios de memoria
+                
+        panel1.repaint();
+        fichaActiva = !fichaActiva;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
     }
 }

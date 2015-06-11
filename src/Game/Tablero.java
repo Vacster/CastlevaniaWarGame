@@ -23,16 +23,17 @@ public class Tablero extends JLayeredPane{
     boolean end = true, z = true; //z define si esta girando o no.
     static JFrame Frame = new JFrame();
     static JLayeredPane panel1 = new JLayeredPane(); //idk
+    public static JLabel atack, hp, shield;
+    static boolean fichaActiva = true;
     JLabel Board = new JLabel(); //Tablero es un jlabel pero solo se usa como icono
     Werewolf were1, were2, were3, were4; //Siempre seran 4 lobos
     Vampire vamp1, vamp2, vamp3, vamp4;
     Death death1, death2, death3, death4;
+    static Ficha currentficha;
     ArrayList<ImageIcon> answers = new ArrayList<>();
     static ArrayList<Ficha> fichas = new ArrayList<>();
     static ArrayList<Space> espacios = new ArrayList<>();
     static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas
-    final static ImageIcon WerewolfP1 = new ImageIcon("src\\Game\\Visual\\WerewolfP1.png");
-    final static ImageIcon WerewolfP2 = new ImageIcon("src\\Game\\Visual\\WerewolfP2.png");
     final static ImageIcon DeathP1 = new ImageIcon("src\\Game\\Visual\\DeathP1.png");
     final static ImageIcon DeathP2 = new ImageIcon("src\\Game\\Visual\\DeathP2.png");
     final static ImageIcon VampireP1 = new ImageIcon("src\\Game\\Visual\\VampireP1.png");
@@ -91,6 +92,17 @@ public class Tablero extends JLayeredPane{
         Frame.getContentPane().add(Roullete);
         Roullete.setBounds(610, 160, 220, 310);
 
+        atack = new JLabel();
+        hp = new JLabel();
+        shield = new JLabel();
+        atack.setBounds(610, 10, 80, 10);
+        hp.setBounds(610, 24, 80, 10);
+        shield.setBounds(610, 38, 80, 10);
+        
+        
+        Frame.add(atack);
+        Frame.add(hp);
+        Frame.add(shield);
         Frame.pack();
         Frame.setLocationRelativeTo(null);
         game();

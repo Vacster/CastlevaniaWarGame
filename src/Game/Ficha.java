@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 public abstract class Ficha extends JLabel implements MouseListener{
     
     protected int vida, escudo, ataque, columna, fila;
-    
+   
     @SuppressWarnings("LeakingThisInConstructor") //Que no chingue netbeans #yolo
     public Ficha(int a, int v, int e, int columna, int fila, int jugador){
         ataque = a;
@@ -26,9 +26,7 @@ public abstract class Ficha extends JLabel implements MouseListener{
         this.columna = columna;
         this.fila = fila;
         setBounds((int)(100.0*columna)+10, (int) (100.0*fila)+5, 85, 88);
-        if(this instanceof Werewolf){
-            setIcon(jugador==1?WerewolfP1:WerewolfP2);
-        }else if(this instanceof Vampire){
+        if(this instanceof Vampire){
             setIcon(jugador==1?VampireP1:VampireP2);
         }else if(this instanceof Death){
             setIcon(jugador==1?DeathP1:DeathP2);
@@ -69,56 +67,39 @@ public abstract class Ficha extends JLabel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        fillSpaces();
-        System.out.println("click");
+        if(fichaActiva){
+            fillSpaces();
+            currentficha = this;
+            System.out.println("press");
+            fichaActiva=!fichaActiva;
+        }else{
+            for(Space s : espacios){ //Quita los espacios del panel
+                panel1.remove(s);
+            }
+            espacios.clear(); //Quita los espacios de memoria
+
+            panel1.repaint();
+            fichaActiva=!fichaActiva;
+            System.out.println("press"); //Opcional
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) { //Esto estaba asqueroso antes
-        if(e.getX()<200 && e.getX()>-100 && e.getY() > -100 && e.getY() < 200){ // Que no ponga el mouse afuera del rango.
-            if(e.getX()>90){ // Derecha
-                if(e.getY()>99){
-                    movimiento(this.columna+1, this.fila+1); //Derecha Abajo
-                }else if(e.getY()<0){
-                    movimiento(this.columna+1, this.fila-1); //Derecha Arriba
-                }else{
-                    movimiento(this.columna+1, this.fila); //Derecha
-                }
-            }else if(e.getX()<0){ //Izquierda
-                if(e.getY()>99){
-                    movimiento(this.columna-1, this.fila+1); //Izquierda Abajo
-                }else if(e.getY()<0){
-                    movimiento(this.columna-1, this.fila-1); //Izquierda Arriba
-                }else{
-                    movimiento(this.columna-1, this.fila); //Izquierda
-                }
-            }else{
-                 if(e.getY()>99){ //Medio
-                    movimiento(this.columna, this.fila+1); //Abajo 
-                }else if(e.getY()<0){
-                    movimiento(this.columna, this.fila-1); //Arriba
-                }
-            }
         }
-                
-        for(Space s : espacios){ //Quita los espacios del panel
-            panel1.remove(s);
-        }
-        espacios.clear(); //Quita los espacios de memoria
-        
-        panel1.repaint(); //Actualiza el panel
-        
-        System.out.println("release"); //Opcional
-    }
 
     @Override
     public void mouseEntered(MouseEvent e) {//TODO mostrar valores de la ficha
-        System.out.println("mouse entered");
+        atack.setText("Ataque: " + ataque);
+        hp.setText("Vida: " + vida);
+        shield.setText("Escudo: " + escudo);
     }
 
     @Override
     public void mouseExited(MouseEvent e) { //TODO quitar los valores de la ficha
-        System.out.println("mouse exited");
+        atack.setText("");
+        hp.setText("");
+        shield.setText("");
     }
     
     @SuppressWarnings("ResultOfObjectAllocationIgnored") //Que no chinge netbeans
