@@ -5,7 +5,6 @@
  */
 package Game;
 
-import static Game.Tablero.*;
 import javax.swing.ImageIcon;
 
 /**
@@ -16,14 +15,7 @@ public class Werewolf extends Ficha{
     final static ImageIcon WerewolfP1 = new ImageIcon("src\\Game\\Visual\\WerewolfP1.png");
     final static ImageIcon WerewolfP2 = new ImageIcon("src\\Game\\Visual\\WerewolfP2.png");
     
-    /**
-     * @param a
-     * @param x columna
-     * @param e
-     * @param v
-     * @param y fila
-     * @param jugador
-     */
+
     public Werewolf(int x, int y, int jugador) {
         super(5, 5, 2, x, y, jugador);
         setIcon(jugador==1?WerewolfP1:WerewolfP2);

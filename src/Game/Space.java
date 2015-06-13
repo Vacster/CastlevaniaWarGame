@@ -9,6 +9,7 @@ import static Game.Tablero.*;
 import javax.swing.JLabel;
 import java.awt.event.MouseEvent; //puntos extra por entender este relajo
 import java.awt.event.MouseListener; 
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,6 +18,7 @@ import java.awt.event.MouseListener;
 public class Space extends JLabel implements MouseListener{   
     
     int x,y;
+    final static ImageIcon Space = new ImageIcon("src\\Game\\Visual\\Space.png");
     
     @SuppressWarnings("LeakingThisInConstructor")//Netbeans plz
     Space(int x, int y){
@@ -38,6 +40,7 @@ public class Space extends JLabel implements MouseListener{
     @Override
     public void mousePressed(MouseEvent me) {
         currentficha.movimiento(x,y);
+        
         for(Space s : espacios){ //Quita los espacios del panel
             panel1.remove(s);
         }
@@ -45,6 +48,13 @@ public class Space extends JLabel implements MouseListener{
                 
         panel1.repaint();
         fichaActiva = !fichaActiva;
+        
+        if(current==1)//No servia el operador ternario por algun motivo
+            current=2;//Escrito como current==1?current=2:current=1;
+        else
+            current=1;
+        
+        currentficha.updateHighlights();
     }
 
     @Override
