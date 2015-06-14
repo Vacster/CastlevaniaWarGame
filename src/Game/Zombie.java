@@ -19,5 +19,5 @@ public class Zombie extends Ficha{
         super(1, 1, 0, columna, fila, jugador);
         setIcon(jugador==1?ZombieP1:ZombieP2);
     }
-    
+
 }

@@ -6,6 +6,7 @@
 package Game;
 
 import static Game.Tablero.*;
+import static Game.ZombieSpace.ZombieSpace;
 import javax.swing.JLabel;
 import java.awt.event.MouseEvent; //puntos extra por entender este relajo
 import java.awt.event.MouseListener; 
@@ -25,11 +26,11 @@ public class Space extends JLabel implements MouseListener{
         this.x = x;
         this.y = y;
         if(fichitas[x][y] == null){
-        setBounds((int)(100.0*x)+3, (int)(100.0*y)+8, 94, 94);
-        setIcon(Space);
-        addMouseListener(this);
-        panel1.add(this,Frame.getComponentCount()-1);
-        espacios.add(this);
+            setBounds((int)(100.0*x)+3, (int)(100.0*y)+8, 94, 94);
+            setIcon(this instanceof ZombieSpace?ZombieSpace:Space);
+            addMouseListener(this);
+            panel1.add(this,Frame.getComponentCount()-1);
+            espacios.add(this);
         }
     }
 
@@ -39,7 +40,13 @@ public class Space extends JLabel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent me) {
-        currentficha.movimiento(x,y);
+        if(me.getButton() == 3 || this instanceof ZombieSpace){
+            Zombie zombie = new Zombie(x,y, currentficha.jugador);
+            fichas.add(zombie);
+            panel1.add(zombie);
+        }else{
+            currentficha.movimiento(x,y);
+        }
         
         for(Space s : espacios){ //Quita los espacios del panel
             panel1.remove(s);
@@ -47,17 +54,18 @@ public class Space extends JLabel implements MouseListener{
         espacios.clear(); //Quita los espacios de memoria
                 
         panel1.repaint();
-        fichaActiva = !fichaActiva;
+        fichaActiva = false;
         
         if(current==1)//No servia el operador ternario por algun motivo
             current=2;//Escrito como current==1?current=2:current=1;
         else
             current=1;
         
-      
+        fichaActiva = false;
         Spin.setVisible(true);
         currentficha.turnPass();
         currentficha.updateHighlights();
+        currentficha = null;
         
     }
 

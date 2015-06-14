@@ -19,5 +19,5 @@ public class Vampire extends Ficha{
         super(3, 4, 5, columna, fila, jugador);
         setIcon(jugador==1?VampireP1:VampireP2);
     }
-    
+
 }

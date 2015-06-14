@@ -19,7 +19,7 @@ import javax.swing.JLayeredPane;
  * @author Kamil
  */
 public class Tablero extends JLayeredPane{
-    static boolean fichaActiva = true, spinning = true;
+    static boolean fichaActiva = false, spinning = true;
     static int current = 1;
     static String pieza; //Pieza elejida por la ruleta
     static ArrayList<Ficha> fichas = new ArrayList<>();
@@ -79,6 +79,7 @@ public class Tablero extends JLayeredPane{
                         pieza = "death";
                     }
                     spinning = false;
+                    fichaActiva = false;
                     Spin.setVisible(false);
                     were1.updateHighlights();
                 }else{  //Gira giraaaa
@@ -141,7 +142,7 @@ public class Tablero extends JLayeredPane{
 
    private void game(){
        while(end){
-           //TODO logica del juego lel.
+           
        }
    }
 

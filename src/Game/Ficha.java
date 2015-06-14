@@ -13,12 +13,13 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author Kamil I
+ * @author Kamil I, Jonathan H, Juan E
  */
 public abstract class Ficha extends JLabel implements MouseListener{
     
     protected int vida, escudo, ataque, columna, fila, jugador;
     ImageIcon highlight = new ImageIcon(getClass().getResource("/Game/Visual/Highlight.png"));
+    private static int t = 0;
    
     @SuppressWarnings("LeakingThisInConstructor") //Que no chingue netbeans #yolo
     public Ficha(int a, int v, int e, int columna, int fila, int jugador){
@@ -49,14 +50,14 @@ public abstract class Ficha extends JLabel implements MouseListener{
             attack.setText("Ataque: " + ficha.ataque);
             hp.setText("Vida: " + ficha.vida);
             shield.setText("Escudo: " + ficha.escudo);
-        }
-        if(ficha.vida <= 0){
-            kill(ficha);
             if(current==1)//No servia el operador ternario por algun motivo
                 current=2;//Escrito como current==1?current=2:current=1;
             else
                 current=1;
-        }   
+        }
+        if(ficha.vida <= 0){
+            kill(ficha);
+        } 
     }
     
     void movimiento(int columna, int fila){ //Cambia la ficha en el array
@@ -77,35 +78,34 @@ public abstract class Ficha extends JLabel implements MouseListener{
     public void mousePressed(MouseEvent e) {
         if(spinning == false){
             if(current == this.jugador){
-                if(fichaActiva && ((this instanceof Vampire && "vampire".equals(pieza)) || 
+                if(!fichaActiva && ((this instanceof Vampire && "vampire".equals(pieza)) || 
                         (this instanceof Death && "death".equals(pieza)) || 
                         (this instanceof Werewolf && "werewolf".equals(pieza)))){
                     fillSpaces();
                     currentficha = this;
-                    fichaActiva=!fichaActiva;
-                }else if(!fichaActiva){
-                    if(currentficha != this){
-                        currentficha.ataque(this);
-                    }
+                    fichaActiva=true;
+                }else if(fichaActiva){
                     for(Space s : espacios){ //Quita los espacios del panel
                         panel1.remove(s);
                     }
                     espacios.clear(); //Quita los espacios de memoria
 
                     panel1.repaint();
-                    fichaActiva = true;
+                    currentficha = null;
+                    fichaActiva = false;
                 }
-            }else{
+            }else if(fichaActiva){
                 if(currentficha != this){
                     currentficha.ataque(this);
                 }
                 for(Space s : espacios){ //Quita los espacios del panel
                         panel1.remove(s);
                     }
-                    espacios.clear(); //Quita los espacios de memoria
+                espacios.clear(); //Quita los espacios de memoria
 
-                    panel1.repaint();
-                    fichaActiva = true;
+                panel1.repaint();
+                currentficha = null;
+                fichaActiva = false;
             }
         }
     }
@@ -243,7 +243,7 @@ public abstract class Ficha extends JLabel implements MouseListener{
             panel1.repaint();
         if(spinning == false){
             for(Ficha f : fichas){
-                if(fichaActiva && f.jugador == current && ((f instanceof Vampire && "vampire".equals(pieza)) || 
+                if(!fichaActiva && f.jugador == current && ((f instanceof Vampire && "vampire".equals(pieza)) || 
                 (f instanceof Death && "death".equals(pieza)) || 
                 (f instanceof Werewolf && "werewolf".equals(pieza)))){
                     JLabel l = new JLabel(highlight);
@@ -263,5 +263,7 @@ public abstract class Ficha extends JLabel implements MouseListener{
         Spin.setText("Stop");
         Spin.setVisible(true);
         spinning = true;
+        t = t+1;
+        System.out.println("Turn Pass " + t);
     }
 }
