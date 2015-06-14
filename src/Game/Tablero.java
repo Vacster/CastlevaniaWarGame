@@ -5,7 +5,6 @@
  */
 package Game;
 
-import static Game.Space.Space;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,18 +19,19 @@ import javax.swing.JLayeredPane;
  * @author Kamil
  */
 public class Tablero extends JLayeredPane{
-    static boolean fichaActiva = true;
+    static boolean fichaActiva = true, spinning = true;
     static int current = 1;
     static String pieza; //Pieza elejida por la ruleta
     static ArrayList<Ficha> fichas = new ArrayList<>();
     static ArrayList<Space> espacios = new ArrayList<>();
     static ArrayList<JLabel> highlights = new ArrayList<>();
     static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas 
-    static JLabel attack, hp, shield;
+    static JLabel attack, hp, shield, Roullete;
     static JFrame Frame = new JFrame();
     static JLayeredPane panel1 = new JLayeredPane(); //idk
     static Ficha currentficha;
-    boolean end = true, z = true; //z define si esta girando o no.
+    static JButton Spin;
+    boolean end = true; //z define si esta girando o no.
     ArrayList<ImageIcon> answers = new ArrayList<>();
     JLabel Board = new JLabel(); //Tablero es un jlabel pero solo se usa como icono
     ImageIcon BoardImage = new ImageIcon("src\\Game\\Visual\\Board.jpg");
@@ -44,8 +44,8 @@ public class Tablero extends JLayeredPane{
     
     
     public Tablero(){
-        JButton Spin = new javax.swing.JButton();
-        JLabel Roullete = new javax.swing.JLabel();
+        Spin = new javax.swing.JButton();
+        Roullete = new javax.swing.JLabel();
         answers.add(vampire);
         answers.add(werewolf);
         answers.add(death);
@@ -63,12 +63,12 @@ public class Tablero extends JLayeredPane{
         Spin.setText("Stop"); //Empieza girando
         Spin.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 SpinMouseClicked(evt);
             }
 
-            private void SpinMouseClicked(MouseEvent evt) {
-                if(z){
+            public void SpinMouseClicked(MouseEvent evt) {
+                if(spinning){
                     Collections.shuffle(answers);  //Mezcla el arraylist que contiene las imagenes
                     Roullete.setIcon(answers.get(0));   //elije la primera opcion del arreglo revuelto para simular un random choice.
                     if(answers.get(0).equals(vampire)){
@@ -78,14 +78,14 @@ public class Tablero extends JLayeredPane{
                     }else{
                         pieza = "death";
                     }
+                    spinning = false;
+                    Spin.setVisible(false);
                     were1.updateHighlights();
-                    Spin.setText("Spin");
-                    z = false;
                 }else{  //Gira giraaaa
                     Roullete.setIcon(new javax.swing.ImageIcon(getClass()
                             .getResource("/Game/Visual/MiniRoullete2.gif")));
                     Spin.setText("Stop");
-                    z = true;
+                    spinning = true;
                 }
             }
         });

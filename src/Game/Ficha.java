@@ -44,8 +44,11 @@ public abstract class Ficha extends JLabel implements MouseListener{
                 ficha.vida -= (ataque-ficha.escudo);
                 ficha.escudo = 0;
             }
-        }else{
-            System.out.println("fuck you");
+            updateHighlights();
+            turnPass();
+            attack.setText("Ataque: " + ficha.ataque);
+            hp.setText("Vida: " + ficha.vida);
+            shield.setText("Escudo: " + ficha.escudo);
         }
         if(ficha.vida <= 0){
             kill(ficha);
@@ -53,9 +56,7 @@ public abstract class Ficha extends JLabel implements MouseListener{
                 current=2;//Escrito como current==1?current=2:current=1;
             else
                 current=1;
-            
-            updateHighlights();
-        }
+        }   
     }
     
     void movimiento(int columna, int fila){ //Cambia la ficha en el array
@@ -74,24 +75,37 @@ public abstract class Ficha extends JLabel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(current == this.jugador){
-            if(fichaActiva && ((this instanceof Vampire && "vampire".equals(pieza)) || 
-                    (this instanceof Death && "death".equals(pieza)) || 
-                    (this instanceof Werewolf && "werewolf".equals(pieza)))){
-                fillSpaces();
-                currentficha = this;
-                fichaActiva=!fichaActiva;
-            }else if(!fichaActiva){
+        if(spinning == false){
+            if(current == this.jugador){
+                if(fichaActiva && ((this instanceof Vampire && "vampire".equals(pieza)) || 
+                        (this instanceof Death && "death".equals(pieza)) || 
+                        (this instanceof Werewolf && "werewolf".equals(pieza)))){
+                    fillSpaces();
+                    currentficha = this;
+                    fichaActiva=!fichaActiva;
+                }else if(!fichaActiva){
+                    if(currentficha != this){
+                        currentficha.ataque(this);
+                    }
+                    for(Space s : espacios){ //Quita los espacios del panel
+                        panel1.remove(s);
+                    }
+                    espacios.clear(); //Quita los espacios de memoria
+
+                    panel1.repaint();
+                    fichaActiva = true;
+                }
+            }else{
                 if(currentficha != this){
                     currentficha.ataque(this);
                 }
                 for(Space s : espacios){ //Quita los espacios del panel
-                    panel1.remove(s);
-                }
-                espacios.clear(); //Quita los espacios de memoria
+                        panel1.remove(s);
+                    }
+                    espacios.clear(); //Quita los espacios de memoria
 
-                panel1.repaint();
-                fichaActiva=!fichaActiva;
+                    panel1.repaint();
+                    fichaActiva = true;
             }
         }
     }
@@ -213,31 +227,41 @@ public abstract class Ficha extends JLabel implements MouseListener{
     private void kill(Ficha f){
         fichitas[f.columna][f.fila] = null;
         f.setIcon(null);
+        fichas.remove(f);
         panel1.remove(f);
         panel1.repaint();
         attack.setText("");
         hp.setText("");
         shield.setText("");
-        f = null;
     }
     
-     void updateHighlights(){
+    void updateHighlights(){
         for(JLabel j : highlights){
             panel1.remove(j);
         }
             highlights.clear();
             panel1.repaint();
-        for(Ficha f : fichas){
-            if(fichaActiva && f.jugador == current && ((f instanceof Vampire && "vampire".equals(pieza)) || 
-            (f instanceof Death && "death".equals(pieza)) || 
-            (f instanceof Werewolf && "werewolf".equals(pieza)))){
-                JLabel l = new JLabel(highlight);
-                l.setBounds((int)(f.columna*100)+3, (int)(100.0*f.fila)+6, 94,98);
-                highlights.add(l);
+        if(spinning == false){
+            for(Ficha f : fichas){
+                if(fichaActiva && f.jugador == current && ((f instanceof Vampire && "vampire".equals(pieza)) || 
+                (f instanceof Death && "death".equals(pieza)) || 
+                (f instanceof Werewolf && "werewolf".equals(pieza)))){
+                    JLabel l = new JLabel(highlight);
+                    l.setBounds((int)(f.columna*100)+3, (int)(100.0*f.fila)+6, 94,98);
+                    highlights.add(l);
+                }
+            }
+            for(JLabel j : highlights){
+                panel1.add(j, panel1.getComponentCount());
             }
         }
-        for(JLabel j : highlights){
-            panel1.add(j, panel1.getComponentCount());
-        }
+    }
+     
+    void turnPass(){
+        Roullete.setIcon(new javax.swing.ImageIcon(getClass()
+                    .getResource("/Game/Visual/MiniRoullete2.gif")));
+        Spin.setText("Stop");
+        Spin.setVisible(true);
+        spinning = true;
     }
 }

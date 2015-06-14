@@ -54,7 +54,11 @@ public class Space extends JLabel implements MouseListener{
         else
             current=1;
         
+      
+        Spin.setVisible(true);
+        currentficha.turnPass();
         currentficha.updateHighlights();
+        
     }
 
     @Override
