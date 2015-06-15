@@ -19,35 +19,33 @@ import javax.swing.JLayeredPane;
  * @author Kamil
  */
 public class Tablero extends JLayeredPane{
-    
-    boolean end = true, z = true; //z define si esta girando o no.
-    static JFrame Frame = new JFrame();
-    static JLayeredPane panel1 = new JLayeredPane(); //idk
-    JLabel Board = new JLabel(); //Tablero es un jlabel pero solo se usa como icono
-    Werewolf were1, were2, were3, were4; //Siempre seran 4 lobos
-    Vampire vamp1, vamp2, vamp3, vamp4;
-    Death death1, death2, death3, death4;
-    ArrayList<ImageIcon> answers = new ArrayList<>();
+    static boolean fichaActiva = false, spinning = true;
+    static int current = 1;
+    static String pieza; //Pieza elejida por la ruleta
     static ArrayList<Ficha> fichas = new ArrayList<>();
     static ArrayList<Space> espacios = new ArrayList<>();
-    static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas
-    final static ImageIcon WerewolfP1 = new ImageIcon("src\\Game\\Visual\\WerewolfP1.png");
-    final static ImageIcon WerewolfP2 = new ImageIcon("src\\Game\\Visual\\WerewolfP2.png");
-    final static ImageIcon DeathP1 = new ImageIcon("src\\Game\\Visual\\DeathP1.png");
-    final static ImageIcon DeathP2 = new ImageIcon("src\\Game\\Visual\\DeathP2.png");
-    final static ImageIcon VampireP1 = new ImageIcon("src\\Game\\Visual\\VampireP1.png");
-    final static ImageIcon VampireP2 = new ImageIcon("src\\Game\\Visual\\VampireP2.png");
-    final static ImageIcon ZombieP1 = new ImageIcon("src\\Game\\Visual\\ZombieP1.png");
-    final static ImageIcon ZombieP2 = new ImageIcon("src\\Game\\Visual\\ZombieP2.png");
-    final static ImageIcon Space = new ImageIcon("src\\Game\\Visual\\Space.png");
+    static ArrayList<JLabel> highlights = new ArrayList<>();
+    static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas 
+    static JLabel attack, hp, shield, Roullete;
+    static JFrame Frame = new JFrame();
+    static JLayeredPane panel1 = new JLayeredPane(); //idk
+    static Ficha currentficha;
+    static JButton Spin;
+    boolean end = true; //z define si esta girando o no.
+    ArrayList<ImageIcon> answers = new ArrayList<>();
+    JLabel Board = new JLabel(); //Tablero es un jlabel pero solo se usa como icono
     ImageIcon BoardImage = new ImageIcon("src\\Game\\Visual\\Board.jpg");
     ImageIcon vampire = new ImageIcon(getClass().getResource("/Game/Visual/VampireChoosing.png"));
     ImageIcon werewolf = new ImageIcon(getClass().getResource("/Game/Visual/WereWolfChoosing.png"));
     ImageIcon death = new ImageIcon(getClass().getResource("/Game/Visual/DeathChoosing.png"));
+    Werewolf were1, were2, were3, were4; //Siempre seran 4 lobos
+    Vampire vamp1, vamp2, vamp3, vamp4;
+    Death death1, death2, death3, death4;
+    
     
     public Tablero(){
-        JButton Spin = new javax.swing.JButton();
-        JLabel Roullete = new javax.swing.JLabel();
+        Spin = new javax.swing.JButton();
+        Roullete = new javax.swing.JLabel();
         answers.add(vampire);
         answers.add(werewolf);
         answers.add(death);
@@ -65,21 +63,30 @@ public class Tablero extends JLayeredPane{
         Spin.setText("Stop"); //Empieza girando
         Spin.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 SpinMouseClicked(evt);
             }
 
-            private void SpinMouseClicked(MouseEvent evt) {
-                if(z){
+            public void SpinMouseClicked(MouseEvent evt) {
+                if(spinning){
                     Collections.shuffle(answers);  //Mezcla el arraylist que contiene las imagenes
                     Roullete.setIcon(answers.get(0));   //elije la primera opcion del arreglo revuelto para simular un random choice.
-                    Spin.setText("Spin");
-                    z = false;
+                    if(answers.get(0).equals(vampire)){
+                        pieza = "vampire";
+                    }else if(answers.get(0).equals(werewolf)){
+                        pieza = "werewolf";
+                    }else{
+                        pieza = "death";
+                    }
+                    spinning = false;
+                    fichaActiva = false;
+                    Spin.setVisible(false);
+                    were1.updateHighlights();
                 }else{  //Gira giraaaa
                     Roullete.setIcon(new javax.swing.ImageIcon(getClass()
                             .getResource("/Game/Visual/MiniRoullete2.gif")));
                     Spin.setText("Stop");
-                    z = true;
+                    spinning = true;
                 }
             }
         });
@@ -91,6 +98,17 @@ public class Tablero extends JLayeredPane{
         Frame.getContentPane().add(Roullete);
         Roullete.setBounds(610, 160, 220, 310);
 
+        attack = new JLabel();
+        hp = new JLabel();
+        shield = new JLabel();
+        attack.setBounds(610, 10, 80, 10);
+        hp.setBounds(610, 24, 80, 10);
+        shield.setBounds(610, 38, 80, 10);
+        
+        
+        Frame.add(attack);
+        Frame.add(hp);
+        Frame.add(shield);
         Frame.pack();
         Frame.setLocationRelativeTo(null);
         game();
@@ -99,43 +117,32 @@ public class Tablero extends JLayeredPane{
    private void start(){
         Frame.setVisible(true);
         Frame.setLocationRelativeTo(null); //Al medio de la pantalla
-        for(int x = 0; x<6;x++){//Inicializa las fichas
-            for(int y = 0; y<6;y++){
-                switch(x){
-                    case 0: if(y==0){
-                                were1 = new Werewolf(x,y,1);
-                            }else if(y==5){
-                                were3 = new Werewolf(x,y,2);
-                            }break;
-                    case 1: if(y==0){
-                                vamp1 = new Vampire( x,y,1);
-                            }else if(y==5){
-                                vamp3 = new Vampire(x,y,2);
-                            }break;   
-                    case 4: if(y==0){
-                                vamp2 = new Vampire(x,y,1);
-                            }else if(y==5){
-                                vamp4 = new Vampire(x,y,2);
-                            }break;  
-                    case 5: if(y==0){
-                                were2 = new Werewolf(x,y,1);
-                            }else if(y==5){
-                                were4 = new Werewolf(x,y,2);
-                            }break;
-                    default: System.out.println("Nothing here."+x+y); break;
-                }   //^opcional
-            }
-        }
+        
+        were1 = new Werewolf(0,0,1);
+        were2 = new Werewolf(5,0,1);
+        were3 = new Werewolf(0,5,2);
+        were4 = new Werewolf(5,5,2);
+        
+        vamp1 = new Vampire(1,0,1);
+        vamp2 = new Vampire(4,0,1);
+        vamp3 = new Vampire(1,5,2);
+        vamp4 = new Vampire(4,5,2);
+        
+        death1 = new Death(2,0,1);
+        death2 = new Death(3,0,1);
+        death3 = new Death(2,5,2);
+        death4 = new Death(3,5,2);
+        
         for(Ficha f : fichas){ //Agrega las fichas al panel en el que esta el 
             panel1.add(f);      // tablero
         }
         panel1.setBounds(0, -5, 600, 610); //Tamano del panel igual al tablero
-        Frame.add(panel1); //Se agregan las fichas al frame
+        Frame.add(panel1); //Se agregan las fichas al frame      
     }
 
    private void game(){
        while(end){
-           //TODO logica del juego lel.
+           
        }
    }
 
