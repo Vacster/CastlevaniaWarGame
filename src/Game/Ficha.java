@@ -130,100 +130,50 @@ public abstract class Ficha extends JLabel implements MouseListener{
     
     @SuppressWarnings("ResultOfObjectAllocationIgnored") //Que no chinge netbeans
     private void fillSpaces(){ //Llena espacios dentro del tablero
-        if(columna<5){ // Si esta fuera, nisiquiera lo dibuja.
-            if(check()){
-                new Space(columna+1, fila);
-            }
-        }
-        if(columna>0){
-            if(check()){
-                new Space(columna-1, fila);
-            }
-        }
-        if(fila<5){
-           if(check()){
-               new Space(columna, fila+1);
-           }
-        }
-        if(fila>0){
-            if(check()){
-                new Space(columna, fila-1);
-            }
-        }
-        if(columna<5&&fila<5){
-            if(check()){
-                new Space(columna+1, fila+1);
-            }
-        }
-        if(columna>0&&fila>0){
-            if(check()){
-                new Space(columna-1, fila-1);
-            }
-        }
-        if(columna>0&&fila<5){
-            if(check()){
-                new Space(columna-1, fila+1);
-            }
-        }
-        if(columna<5&&fila>0){
-           if(check()){
-                new Space(columna+1, fila-1);
-            } 
-        }
+        if(columna < 5 && fichitas[columna+1][fila] == null)//vergueo 
+            new Space(columna+1, fila);
+        if(columna < 5 && fila < 5 && fichitas[columna+1][fila+1] == null)
+            new Space(columna+1,fila+1);
+        if(fila < 5 && fichitas[columna][fila+1] == null)
+            new Space(columna, fila+1);
+        if(columna > 0 && fichitas[columna-1][fila] == null)
+            new Space(columna-1, fila);
+        if(fila > 0 && columna > 0 && fichitas[columna-1][fila-1] == null)
+            new Space(columna-1, fila-1);
+        if(fila > 0 && fichitas[columna][fila-1] == null)
+            new Space(columna, fila-1);
+        if(fila > 0 && columna < 5 &&fichitas[columna+1][fila-1] == null)
+            new Space(columna+1, fila-1);
+        if(fila < 5 && columna > 0 && fichitas[columna-1][fila+1] == null)
+            new Space(columna-1, fila+1);
         if(this instanceof Werewolf){
-             if(columna<4){ // Si esta fuera, nisiquiera lo dibuja.
-            if(check()){
+            if(columna < 4 && fichitas[columna+1][fila] == null
+                    && fichitas[columna+2][fila] == null)
                 new Space(columna+2, fila);
-            }
-        }
-        if(columna>1){
-            if(check()){
+            if(columna < 4 && fila < 4 && fichitas[columna+1][fila+1] == null
+                    && fichitas[columna+2][fila+2] == null)
+                new Space(columna+2,fila+2);
+            if(fila < 4 && fichitas[columna][fila+1] == null 
+                    && fichitas[columna][fila+2] == null)
+                new Space(columna, fila+2);
+            if(columna > 1 && fichitas[columna-1][fila] == null 
+                    && fichitas[columna-2][fila] == null)
                 new Space(columna-2, fila);
-            }
-        }
-        if(fila<4){
-           if(check()){
-               new Space(columna, fila+2);
-           }
-        }
-        if(fila>1){
-            if(check()){
-                new Space(columna, fila-2);
-            }
-        }
-        if(columna<4&&fila<4){
-            if(check()){
-                new Space(columna+2, fila+2);
-            }
-        }
-        if(columna>1&&fila>1){
-            if(check()){
+            if(fila > 1 && columna > 1 && fichitas[columna-1][fila-1] == null
+                    && fichitas[columna-2][fila-2] == null)
                 new Space(columna-2, fila-2);
-            }
-        }
-        if(columna>1&&fila<4){
-            if(check()){
-                new Space(columna-2, fila+2);
-            }
-        }
-        if(columna<4&&fila>1){
-           if(check()){
+            if(fila > 1 && fichitas[columna][fila-1] == null
+                    && fichitas[columna][fila-2] == null)
+                new Space(columna, fila-2);
+            if(fila > 1 && columna < 4 && fichitas[columna+1][fila-1] == null
+                    && fichitas[columna+2][fila-2] == null)
                 new Space(columna+2, fila-2);
-            } 
-        }
+            if(fila < 4 && columna > 1 && fichitas[columna-1][fila+1] == null
+                    && fichitas[columna-2][fila+2] == null)
+                new Space(columna-2, fila+2);
         }
     }
-    
-    private boolean check(){ //Que carajos hace esta funcion?
-        for(Ficha f : fichas){ //Yo (k) la hize pero no me acuerdo para que pero
-            if((f.fila == fila || f.columna == columna)//sin ella no funciona.
-                    && (this.columna != f.columna && this.fila != f.fila)){
-                    return false; //La entiendo mas o menos pero para que existe!?!?
-            }
-        } //Wat r u duin
-        return true;//stahp
-    }
-    
+ 
     private void kill(Ficha f){
         fichitas[f.columna][f.fila] = null;
         f.setIcon(null);
