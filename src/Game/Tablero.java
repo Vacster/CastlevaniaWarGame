@@ -25,6 +25,7 @@ public class Tablero extends JLayeredPane{
     static ArrayList<Ficha> fichas = new ArrayList<>();
     static ArrayList<Space> espacios = new ArrayList<>();
     static ArrayList<JLabel> highlights = new ArrayList<>();
+    static ArrayList<JLabel> AttackHighlights = new ArrayList<>();
     static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas 
     static JLabel attack, hp, shield, Roullete;
     static JFrame Frame = new JFrame();

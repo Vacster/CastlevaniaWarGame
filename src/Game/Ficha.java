@@ -6,6 +6,7 @@
 package Game;
 
 import static Game.Tablero.*; //#yolo
+import static Game.ZombieSpace.ZombieSpace;
 import java.awt.event.MouseEvent; //puntos extra por entender este relajo
 import java.awt.event.MouseListener; //este tambien
 import javax.swing.ImageIcon;
@@ -19,7 +20,6 @@ public abstract class Ficha extends JLabel implements MouseListener{
     
     protected int vida, escudo, ataque, columna, fila, jugador;
     ImageIcon highlight = new ImageIcon(getClass().getResource("/Game/Visual/Highlight.png"));
-    private static int t = 0;
    
     @SuppressWarnings("LeakingThisInConstructor") //Que no chingue netbeans #yolo
     public Ficha(int a, int v, int e, int columna, int fila, int jugador){
@@ -80,6 +80,7 @@ public abstract class Ficha extends JLabel implements MouseListener{
             if(current == this.jugador){
                 if(!fichaActiva && ((this instanceof Vampire && "vampire".equals(pieza)) || 
                         (this instanceof Death && "death".equals(pieza)) || 
+                        (this instanceof Zombie && "death".equals(pieza)) ||
                         (this instanceof Werewolf && "werewolf".equals(pieza)))){
                     fillSpaces();
                     currentficha = this;
@@ -130,23 +131,17 @@ public abstract class Ficha extends JLabel implements MouseListener{
     
     @SuppressWarnings("ResultOfObjectAllocationIgnored") //Que no chinge netbeans
     private void fillSpaces(){ //Llena espacios dentro del tablero
-        if(columna < 5 && fichitas[columna+1][fila] == null)//vergueo 
-            new Space(columna+1, fila);
-        if(columna < 5 && fila < 5 && fichitas[columna+1][fila+1] == null)
-            new Space(columna+1,fila+1);
-        if(fila < 5 && fichitas[columna][fila+1] == null)
-            new Space(columna, fila+1);
-        if(columna > 0 && fichitas[columna-1][fila] == null)
-            new Space(columna-1, fila);
-        if(fila > 0 && columna > 0 && fichitas[columna-1][fila-1] == null)
-            new Space(columna-1, fila-1);
-        if(fila > 0 && fichitas[columna][fila-1] == null)
-            new Space(columna, fila-1);
-        if(fila > 0 && columna < 5 &&fichitas[columna+1][fila-1] == null)
-            new Space(columna+1, fila-1);
-        if(fila < 5 && columna > 0 && fichitas[columna-1][fila+1] == null)
-            new Space(columna-1, fila+1);
-        if(this instanceof Werewolf){
+        if(!(this instanceof Zombie)){
+        for(int x = -1; x<2;x++){
+            for(int y = -1; y<2; y++){//IM SO GOOD AT THIS
+                try{
+                if(x>0?columna<5:columna>=0 && y>0?fila<5:fila>=0 && fichitas[columna+x][fila+y] == null){
+                    new Space(columna+x, fila+y);
+                }
+                }catch(ArrayIndexOutOfBoundsException e){}
+            }
+        }}
+        if(this instanceof Werewolf){ //Me cago en programacion / Temporal
             if(columna < 4 && fichitas[columna+1][fila] == null
                     && fichitas[columna+2][fila] == null)
                 new Space(columna+2, fila);
@@ -171,6 +166,31 @@ public abstract class Ficha extends JLabel implements MouseListener{
             if(fila < 4 && columna > 1 && fichitas[columna-1][fila+1] == null
                     && fichitas[columna-2][fila+2] == null)
                 new Space(columna-2, fila+2);
+        }else if(this instanceof Death){
+            for(int x = 0; x < 6; x++){
+                for(int y = 0; y < 6; y++){
+                    boolean t = false;
+                    for(Space s : espacios){
+                        if(s.x == x && s.y == y)
+                            t = true;
+                    }
+                    if(fichitas[x][y] == null && !t)
+                        new ZombieSpace(x,y);
+                }
+            }
+        }else if(this instanceof Zombie){
+            for(int x = -1; x<2;x++){
+                for(int y = -1; y<2; y++){//IM SO GOOD AT THIS
+                    try{
+                        if(fichitas[columna+x][fila+y] != null){
+                        JLabel l = new JLabel(ZombieSpace);
+                        l.setBounds((int)((columna+x)*100)+3, (int)((fila+y)*100)+6, 94,98);
+                        AttackHighlights.add(l);
+                        panel1.add(l, panel1.getComponentCount());
+                        }
+                    }catch(ArrayIndexOutOfBoundsException e){}
+                }
+            }
         }
     }
  
@@ -189,12 +209,16 @@ public abstract class Ficha extends JLabel implements MouseListener{
         for(JLabel j : highlights){
             panel1.remove(j);
         }
+        for(JLabel j : AttackHighlights){
+            panel1.remove(j);
+        }
             highlights.clear();
+            AttackHighlights.clear();
             panel1.repaint();
         if(spinning == false){
             for(Ficha f : fichas){
                 if(!fichaActiva && f.jugador == current && ((f instanceof Vampire && "vampire".equals(pieza)) || 
-                (f instanceof Death && "death".equals(pieza)) || 
+                (f instanceof Death && "death".equals(pieza)) || (f instanceof Zombie && "death".equals(pieza)) ||
                 (f instanceof Werewolf && "werewolf".equals(pieza)))){
                     JLabel l = new JLabel(highlight);
                     l.setBounds((int)(f.columna*100)+3, (int)(100.0*f.fila)+6, 94,98);
@@ -213,7 +237,5 @@ public abstract class Ficha extends JLabel implements MouseListener{
         Spin.setText("Stop");
         Spin.setVisible(true);
         spinning = true;
-        t = t+1;
-        System.out.println("Turn Pass " + t);
     }
 }
