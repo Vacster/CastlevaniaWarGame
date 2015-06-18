@@ -41,7 +41,7 @@ public class Space extends JLabel implements MouseListener{
     @Override
     public void mousePressed(MouseEvent me) {
         if(me.getButton() == 3 || this instanceof ZombieSpace){
-            Zombie zombie = new Zombie(x,y, currentficha.jugador);
+            Zombie zombie = new Zombie(x,y, current);
             fichas.add(zombie);
             panel1.add(zombie);
         }else{

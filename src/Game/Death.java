@@ -5,6 +5,7 @@
  */
 package Game;
 
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -14,6 +15,8 @@ import javax.swing.ImageIcon;
 public class Death extends Ficha{
     final static ImageIcon DeathP1 = new ImageIcon("src\\Game\\Visual\\DeathP1.png");
     final static ImageIcon DeathP2 = new ImageIcon("src\\Game\\Visual\\DeathP2.png");
+    static ArrayList<Zombie> Zombies = new ArrayList<>();
+    
     public Death(int columna, int fila, int jugador) {
         super(4, 3, 1, columna, fila, jugador);
         setIcon(jugador==1?DeathP1:DeathP2);

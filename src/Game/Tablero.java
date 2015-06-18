@@ -25,7 +25,6 @@ public class Tablero extends JLayeredPane{
     static ArrayList<Ficha> fichas = new ArrayList<>();
     static ArrayList<Space> espacios = new ArrayList<>();
     static ArrayList<JLabel> highlights = new ArrayList<>();
-    static ArrayList<JLabel> AttackHighlights = new ArrayList<>();
     static Ficha[][] fichitas = new Ficha[6][6]; //Iniziar todas las imagenes usadas 
     static JLabel attack, hp, shield, Roullete;
     static JFrame Frame = new JFrame();
@@ -39,9 +38,6 @@ public class Tablero extends JLayeredPane{
     ImageIcon vampire = new ImageIcon(getClass().getResource("/Game/Visual/VampireChoosing.png"));
     ImageIcon werewolf = new ImageIcon(getClass().getResource("/Game/Visual/WereWolfChoosing.png"));
     ImageIcon death = new ImageIcon(getClass().getResource("/Game/Visual/DeathChoosing.png"));
-    Werewolf were1, were2, were3, were4; //Siempre seran 4 lobos
-    Vampire vamp1, vamp2, vamp3, vamp4;
-    Death death1, death2, death3, death4;
     
     
     public Tablero(){
@@ -68,7 +64,7 @@ public class Tablero extends JLayeredPane{
                 SpinMouseClicked(evt);
             }
 
-            public void SpinMouseClicked(MouseEvent evt) {
+            public void SpinMouseClicked(MouseEvent evt) throws InterruptedException {
                 if(spinning){
                     Collections.shuffle(answers);  //Mezcla el arraylist que contiene las imagenes
                     Roullete.setIcon(answers.get(0));   //elije la primera opcion del arreglo revuelto para simular un random choice.
@@ -79,10 +75,30 @@ public class Tablero extends JLayeredPane{
                     }else{
                         pieza = "death";
                     }
-                    spinning = false;
-                    fichaActiva = false;
-                    Spin.setVisible(false);
-                    were1.updateHighlights();
+                    boolean b = false;
+                    for(Ficha f : fichas){
+                        if(((f instanceof Vampire && "vampire".equals(pieza)) || 
+                        (f instanceof Death && "death".equals(pieza)) || 
+                        (f instanceof Zombie && "death".equals(pieza)) ||
+                        (f instanceof Werewolf && "werewolf".equals(pieza)))){
+                            if(f.jugador == current){
+                                b = true;
+                            }
+                        }
+                    }
+                    if(b){
+                        spinning = false;
+                        fichaActiva = false;
+                        Spin.setVisible(false);
+                        fichas.get(0).updateHighlights();
+                    }else{
+                        wait(5000);
+                        fichas.get(0).turnPass();
+                        if(current==1)//No servia el operador ternario por algun motivo
+                            current=2;//Escrito como current==1?current=2:current=1;
+                        else
+                            current=1;
+                    }
                 }else{  //Gira giraaaa
                     Roullete.setIcon(new javax.swing.ImageIcon(getClass()
                             .getResource("/Game/Visual/MiniRoullete2.gif")));
@@ -119,20 +135,20 @@ public class Tablero extends JLayeredPane{
         Frame.setVisible(true);
         Frame.setLocationRelativeTo(null); //Al medio de la pantalla
         
-        were1 = new Werewolf(0,0,1);
-        were2 = new Werewolf(5,0,1);
-        were3 = new Werewolf(0,5,2);
-        were4 = new Werewolf(5,5,2);
+        new Werewolf(0,0,1);
+        new Werewolf(5,0,1);
+        new Werewolf(0,5,2);
+        new Werewolf(5,5,2);
         
-        vamp1 = new Vampire(1,0,1);
-        vamp2 = new Vampire(4,0,1);
-        vamp3 = new Vampire(1,5,2);
-        vamp4 = new Vampire(4,5,2);
-        
-        death1 = new Death(2,0,1);
-        death2 = new Death(3,0,1);
-        death3 = new Death(2,5,2);
-        death4 = new Death(3,5,2);
+        new Vampire(1,0,1);
+        new Vampire(4,0,1);
+        new Vampire(1,5,2);
+        new Vampire(4,5,2);
+
+        new Death(2,0,1);
+        new Death(3,0,1);
+        new Death(2,5,2);
+        new Death(3,5,2);
         
         for(Ficha f : fichas){ //Agrega las fichas al panel en el que esta el 
             panel1.add(f);      // tablero

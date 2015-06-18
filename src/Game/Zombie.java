@@ -5,6 +5,7 @@
  */
 package Game;
 
+import static Game.Death.Zombies;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,6 +19,6 @@ public class Zombie extends Ficha{
     public Zombie(int columna, int fila, int jugador) {
         super(1, 1, 0, columna, fila, jugador);
         setIcon(jugador==1?ZombieP1:ZombieP2);
+        Zombies.add(this);
     }
-
 }
