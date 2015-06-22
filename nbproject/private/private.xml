@@ -3,15 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Vampire.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Main.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Tablero.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Death.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Werewolf.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Zombie.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Space.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Ficha.java</file>
-            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/ZombieSpace.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Jugable.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Tablero.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Zombie.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Saves.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Menu/Codigo/Jugador.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Vampire.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Death.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Ficha.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Space.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Menu/Visual/SavedGames.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Menu/Visual/Jugar.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Menu/Visual/BorrarGames.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/FacebookConnector.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Werewolf.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Menu/Visual/TransferirGames.java</file>
+            <file>file:/C:/Users/Kamil/Documents/NetBeansProjects/CastlevaniaWarGame/src/Game/Codigo/Saved.java</file>
         </group>
     </open-files>
 </project-private>

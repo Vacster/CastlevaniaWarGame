@@ -1,0 +1,39 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Game.Codigo;
+
+import static Game.Codigo.Tablero.fichitas;
+import javax.swing.ImageIcon;
+
+/**
+ *
+ * @author Kamil
+ */
+public class Vampire extends Ficha{
+
+    final static ImageIcon VampireP1 = new ImageIcon("src\\Game\\Visual\\VampireP1.png");
+    final static ImageIcon VampireP2 = new ImageIcon("src\\Game\\Visual\\VampireP2.png");
+    
+    public Vampire(int columna, int fila, int jugador) {
+        super(3, 4, 5, columna, fila, jugador);
+        setIcon(jugador==1?VampireP1:VampireP2);
+    }
+    
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
+    @Override
+     public void fillSpaces(){ //Llena espacios dentro del tablero
+        for(int x = -1; x<2;x++){
+            for(int y = -1; y<2; y++){//IM SO GOOD AT THIS
+                try{
+                if(x>0?columna<5:columna>=0 && y>0?fila<5:fila>=0 && fichitas[columna+x][fila+y] == null){
+                    new Space(columna+x, fila+y);
+                }
+                }catch(ArrayIndexOutOfBoundsException e){}
+            }
+        }
+    }
+
+}
